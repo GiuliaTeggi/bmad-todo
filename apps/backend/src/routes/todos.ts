@@ -17,7 +17,7 @@ const updateTodoBodySchema = z.object({
 })
 
 const todoParamsSchema = z.object({
-  id: z.string()
+  id: z.string().uuid("Invalid todo ID format")
 })
 
 function formatTodo(row: {
