@@ -42,6 +42,8 @@ RUN echo '{"type":"module"}' > dist/package.json
 
 ENV NODE_ENV=production
 
+USER node
+
 EXPOSE 3000
 
 CMD ["node", "dist/server.js"]
