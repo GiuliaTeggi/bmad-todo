@@ -1,6 +1,6 @@
 # bmad-todo
 
-A simple full-stack todo application built to learn and explore the **BMAD (Breakthrough Method of Agile AI-Driven Development)** methodology and its workflows. The app was designed, planned, and implemented entirely through BMAD agents and workflows — from product brief and architecture through to working code.
+A simple full-stack todo application built to learn and explore the **BMAD (Breakthrough Method of Agile AI-Driven Development)** methodology and its workflows (https://docs.bmad-method.org/). The app was designed, planned, and implemented entirely through BMAD agents and workflows — from product brief and architecture through to working code.
 
 ## BMAD Methodology
 
