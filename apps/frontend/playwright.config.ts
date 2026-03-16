@@ -7,9 +7,17 @@ export default defineConfig({
   retries: 0,
   reporter: "html",
   use: {
-    baseURL: process.env.BASE_URL ?? "http://localhost",
+    baseURL: process.env.BASE_URL ?? "http://localhost:5173",
     trace: "on-first-retry"
   },
+  webServer: process.env.BASE_URL
+    ? undefined
+    : {
+        command: "npm run dev",
+        url: "http://localhost:5173",
+        reuseExistingServer: true,
+        timeout: 30_000
+      },
   projects: [
     {
       name: "chromium",
