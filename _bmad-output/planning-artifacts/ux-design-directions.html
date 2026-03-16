@@ -1,0 +1,856 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>bmad-todo — UX Design Directions</title>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: #f3f4f6;
+        color: #111827;
+        padding: 32px 16px;
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 8px;
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
+      .subtitle {
+        text-align: center;
+        color: #6b7280;
+        font-size: 0.875rem;
+        margin-bottom: 40px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 32px;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+      .card {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+      .card-label {
+        padding: 12px 16px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        border-bottom: 1px solid #e5e7eb;
+        color: #6b7280;
+        background: #f9fafb;
+      }
+      .mockup {
+        padding: 24px;
+        min-height: 420px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* ── Direction A: Minimal Light ── */
+      .dir-a {
+        background: #fafafa;
+      }
+      .dir-a .app-title {
+        font-size: 1.125rem;
+        font-weight: 500;
+        color: #111827;
+        margin-bottom: 20px;
+      }
+      .dir-a .input-row {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 20px;
+      }
+      .dir-a input {
+        flex: 1;
+        padding: 10px 14px;
+        border: 1px solid #e5e7eb;
+        border-radius: 6px;
+        font-size: 1rem;
+        background: white;
+        outline: none;
+        font-family: inherit;
+      }
+      .dir-a input:focus {
+        border-color: #4f46e5;
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+      }
+      .dir-a .btn-add {
+        padding: 10px 16px;
+        background: #4f46e5;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+      .dir-a .todo-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 0;
+        border-bottom: 1px solid #f3f4f6;
+      }
+      .dir-a .todo-item:last-child {
+        border-bottom: none;
+      }
+      .dir-a .checkbox {
+        width: 18px;
+        height: 18px;
+        border: 2px solid #d1d5db;
+        border-radius: 4px;
+        cursor: pointer;
+        flex-shrink: 0;
+      }
+      .dir-a .checkbox.checked {
+        background: #4f46e5;
+        border-color: #4f46e5;
+        position: relative;
+      }
+      .dir-a .checkbox.checked::after {
+        content: "";
+        position: absolute;
+        left: 3px;
+        top: 1px;
+        width: 10px;
+        height: 6px;
+        border-left: 2px solid white;
+        border-bottom: 2px solid white;
+        transform: rotate(-45deg);
+      }
+      .dir-a .todo-text {
+        flex: 1;
+        font-size: 1rem;
+        color: #111827;
+      }
+      .dir-a .todo-text.done {
+        text-decoration: line-through;
+        color: #9ca3af;
+      }
+      .dir-a .btn-delete {
+        opacity: 0;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #9ca3af;
+        font-size: 1rem;
+        padding: 4px;
+        border-radius: 4px;
+        transition:
+          opacity 0.15s,
+          color 0.15s;
+      }
+      .dir-a .todo-item:hover .btn-delete {
+        opacity: 1;
+        color: #ef4444;
+      }
+      .dir-a .empty {
+        color: #9ca3af;
+        font-size: 0.875rem;
+        text-align: center;
+        margin-top: 20px;
+      }
+
+      /* ── Direction B: Card-Based ── */
+      .dir-b {
+        background: #f1f5f9;
+      }
+      .dir-b .app-card {
+        background: white;
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+      }
+      .dir-b .app-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #0f172a;
+        margin-bottom: 16px;
+      }
+      .dir-b input {
+        width: 100%;
+        padding: 11px 14px;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 1rem;
+        background: #f8fafc;
+        outline: none;
+        font-family: inherit;
+        margin-bottom: 16px;
+      }
+      .dir-b input:focus {
+        border-color: #6366f1;
+        background: white;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+      }
+      .dir-b .todo-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border-radius: 8px;
+        margin-bottom: 6px;
+        background: #f8fafc;
+      }
+      .dir-b .checkbox {
+        width: 20px;
+        height: 20px;
+        border: 2px solid #cbd5e1;
+        border-radius: 50%;
+        cursor: pointer;
+        flex-shrink: 0;
+      }
+      .dir-b .checkbox.checked {
+        background: #6366f1;
+        border-color: #6366f1;
+        position: relative;
+      }
+      .dir-b .checkbox.checked::after {
+        content: "✓";
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 11px;
+        font-weight: 700;
+        left: 4px;
+        top: 1px;
+      }
+      .dir-b .todo-text {
+        flex: 1;
+        font-size: 0.9375rem;
+        color: #0f172a;
+      }
+      .dir-b .todo-text.done {
+        text-decoration: line-through;
+        color: #94a3b8;
+      }
+      .dir-b .btn-delete {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #cbd5e1;
+        font-size: 1rem;
+        padding: 4px 6px;
+        transition: color 0.15s;
+        border-radius: 4px;
+      }
+      .dir-b .btn-delete:hover {
+        color: #ef4444;
+        background: #fef2f2;
+      }
+
+      /* ── Direction C: Dense / Pro ── */
+      .dir-c {
+        background: #18181b;
+      }
+      .dir-c .app-title {
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: #71717a;
+        margin-bottom: 16px;
+      }
+      .dir-c .input-row {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 16px;
+      }
+      .dir-c input {
+        flex: 1;
+        padding: 8px 12px;
+        background: #27272a;
+        border: 1px solid #3f3f46;
+        border-radius: 5px;
+        color: #fafafa;
+        font-size: 0.875rem;
+        outline: none;
+        font-family: inherit;
+      }
+      .dir-c input::placeholder {
+        color: #52525b;
+      }
+      .dir-c input:focus {
+        border-color: #818cf8;
+        box-shadow: 0 0 0 2px rgba(129, 140, 248, 0.2);
+      }
+      .dir-c .btn-add {
+        padding: 8px 12px;
+        background: #3f3f46;
+        color: #a1a1aa;
+        border: none;
+        border-radius: 5px;
+        font-size: 0.75rem;
+        cursor: pointer;
+      }
+      .dir-c .todo-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 0;
+        border-bottom: 1px solid #27272a;
+      }
+      .dir-c .checkbox {
+        width: 14px;
+        height: 14px;
+        border: 1.5px solid #52525b;
+        border-radius: 3px;
+        cursor: pointer;
+        flex-shrink: 0;
+      }
+      .dir-c .checkbox.checked {
+        background: #818cf8;
+        border-color: #818cf8;
+      }
+      .dir-c .todo-text {
+        flex: 1;
+        font-size: 0.875rem;
+        color: #e4e4e7;
+      }
+      .dir-c .todo-text.done {
+        text-decoration: line-through;
+        color: #52525b;
+      }
+      .dir-c .btn-delete {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #52525b;
+        font-size: 0.875rem;
+        padding: 2px 4px;
+        opacity: 0;
+        transition:
+          opacity 0.1s,
+          color 0.1s;
+      }
+      .dir-c .todo-item:hover .btn-delete {
+        opacity: 1;
+        color: #f87171;
+      }
+
+      /* ── Direction D: Warm / Friendly ── */
+      .dir-d {
+        background: #fffbf5;
+      }
+      .dir-d .app-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #1c1917;
+        margin-bottom: 4px;
+      }
+      .dir-d .app-subtitle {
+        font-size: 0.875rem;
+        color: #a8a29e;
+        margin-bottom: 20px;
+      }
+      .dir-d .input-row {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 20px;
+      }
+      .dir-d input {
+        flex: 1;
+        padding: 12px 16px;
+        border: 2px solid #e7e5e4;
+        border-radius: 99px;
+        font-size: 1rem;
+        background: white;
+        outline: none;
+        font-family: inherit;
+      }
+      .dir-d input:focus {
+        border-color: #f97316;
+        box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+      }
+      .dir-d .btn-add {
+        width: 44px;
+        height: 44px;
+        background: #f97316;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        font-size: 1.25rem;
+        cursor: pointer;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .dir-d .todo-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        border-radius: 10px;
+        margin-bottom: 8px;
+        background: white;
+        border: 1.5px solid #f5f5f4;
+      }
+      .dir-d .checkbox {
+        width: 22px;
+        height: 22px;
+        border: 2px solid #d6d3d1;
+        border-radius: 50%;
+        cursor: pointer;
+        flex-shrink: 0;
+      }
+      .dir-d .checkbox.checked {
+        background: #22c55e;
+        border-color: #22c55e;
+      }
+      .dir-d .todo-text {
+        flex: 1;
+        font-size: 1rem;
+        color: #1c1917;
+      }
+      .dir-d .todo-text.done {
+        text-decoration: line-through;
+        color: #a8a29e;
+      }
+      .dir-d .btn-delete {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #d6d3d1;
+        font-size: 1rem;
+        padding: 4px;
+        transition: color 0.15s;
+      }
+      .dir-d .btn-delete:hover {
+        color: #ef4444;
+      }
+
+      /* ── Direction E: High Contrast / Accessible ── */
+      .dir-e {
+        background: #ffffff;
+      }
+      .dir-e .app-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #000;
+        margin-bottom: 16px;
+        border-bottom: 2px solid #000;
+        padding-bottom: 8px;
+      }
+      .dir-e .input-row {
+        display: flex;
+        gap: 0;
+        margin-bottom: 16px;
+        border: 2px solid #000;
+        border-radius: 4px;
+        overflow: hidden;
+      }
+      .dir-e input {
+        flex: 1;
+        padding: 10px 12px;
+        border: none;
+        font-size: 1rem;
+        background: white;
+        outline: none;
+        font-family: inherit;
+      }
+      .dir-e .btn-add {
+        padding: 10px 16px;
+        background: #000;
+        color: white;
+        border: none;
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .dir-e .todo-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 0;
+        border-bottom: 1px solid #d1d5db;
+      }
+      .dir-e input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        accent-color: #000;
+        cursor: pointer;
+        flex-shrink: 0;
+      }
+      .dir-e .todo-text {
+        flex: 1;
+        font-size: 1rem;
+        color: #000;
+      }
+      .dir-e .todo-text.done {
+        text-decoration: line-through;
+        color: #6b7280;
+      }
+      .dir-e .btn-delete {
+        background: none;
+        border: 1px solid #d1d5db;
+        cursor: pointer;
+        color: #6b7280;
+        font-size: 0.875rem;
+        padding: 4px 8px;
+        border-radius: 3px;
+        transition: all 0.1s;
+      }
+      .dir-e .btn-delete:hover {
+        background: #fef2f2;
+        border-color: #ef4444;
+        color: #ef4444;
+      }
+
+      /* ── Direction F: Spacious / Editorial ── */
+      .dir-f {
+        background: #fafafa;
+      }
+      .dir-f .app-title {
+        font-size: 2rem;
+        font-weight: 300;
+        color: #111827;
+        margin-bottom: 32px;
+        letter-spacing: -0.02em;
+      }
+      .dir-f input {
+        display: block;
+        width: 100%;
+        padding: 0 0 12px;
+        border: none;
+        border-bottom: 2px solid #e5e7eb;
+        font-size: 1rem;
+        background: transparent;
+        outline: none;
+        font-family: inherit;
+        margin-bottom: 28px;
+        color: #111827;
+      }
+      .dir-f input::placeholder {
+        color: #9ca3af;
+      }
+      .dir-f input:focus {
+        border-bottom-color: #111827;
+      }
+      .dir-f .todo-item {
+        display: flex;
+        align-items: baseline;
+        gap: 14px;
+        padding: 14px 0;
+        border-bottom: 1px solid #f3f4f6;
+      }
+      .dir-f .checkbox {
+        width: 16px;
+        height: 16px;
+        border: 1.5px solid #9ca3af;
+        border-radius: 50%;
+        cursor: pointer;
+        flex-shrink: 0;
+        margin-top: 2px;
+      }
+      .dir-f .checkbox.checked {
+        background: #111827;
+        border-color: #111827;
+      }
+      .dir-f .todo-text {
+        flex: 1;
+        font-size: 1rem;
+        color: #374151;
+        line-height: 1.5;
+      }
+      .dir-f .todo-text.done {
+        text-decoration: line-through;
+        color: #d1d5db;
+      }
+      .dir-f .btn-delete {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: transparent;
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font-weight: 500;
+        transition: color 0.15s;
+        padding: 0;
+      }
+      .dir-f .todo-item:hover .btn-delete {
+        color: #9ca3af;
+      }
+
+      .legend {
+        max-width: 1400px;
+        margin: 40px auto 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 12px;
+      }
+      .legend-item {
+        background: white;
+        border-radius: 8px;
+        padding: 12px 16px;
+        font-size: 0.8125rem;
+      }
+      .legend-item strong {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 2px;
+      }
+      .legend-item span {
+        color: #6b7280;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>bmad-todo — Design Directions</h1>
+    <p class="subtitle">
+      6 visual directions for evaluation. Hover todo items to reveal delete
+      actions.
+    </p>
+
+    <div class="grid">
+      <!-- Direction A -->
+      <div class="card">
+        <div class="card-label">Direction A — Minimal Light (Recommended)</div>
+        <div class="mockup dir-a">
+          <div class="app-title">My Todos</div>
+          <div class="input-row">
+            <input type="text" placeholder="Add a new todo…" />
+            <button class="btn-add">Add</button>
+          </div>
+          <div class="todo-item">
+            <div class="checkbox checked"></div>
+            <span class="todo-text done">Buy groceries</span>
+            <button class="btn-delete">✕</button>
+          </div>
+          <div class="todo-item">
+            <div class="checkbox"></div>
+            <span class="todo-text">Write architecture doc</span>
+            <button class="btn-delete">✕</button>
+          </div>
+          <div class="todo-item">
+            <div class="checkbox"></div>
+            <span class="todo-text">Review pull request</span>
+            <button class="btn-delete">✕</button>
+          </div>
+          <div class="todo-item">
+            <div class="checkbox"></div>
+            <span class="todo-text">Call the dentist</span>
+            <button class="btn-delete">✕</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Direction B -->
+      <div class="card">
+        <div class="card-label">Direction B — Card-Based</div>
+        <div class="mockup dir-b">
+          <div class="app-card">
+            <div class="app-title">My Todos</div>
+            <input type="text" placeholder="What needs to be done?" />
+            <div class="todo-item">
+              <div class="checkbox checked"></div>
+              <span class="todo-text done">Buy groceries</span>
+              <button class="btn-delete">✕</button>
+            </div>
+            <div class="todo-item">
+              <div class="checkbox"></div>
+              <span class="todo-text">Write architecture doc</span>
+              <button class="btn-delete">✕</button>
+            </div>
+            <div class="todo-item">
+              <div class="checkbox"></div>
+              <span class="todo-text">Review pull request</span>
+              <button class="btn-delete">✕</button>
+            </div>
+            <div class="todo-item">
+              <div class="checkbox"></div>
+              <span class="todo-text">Call the dentist</span>
+              <button class="btn-delete">✕</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Direction C -->
+      <div class="card">
+        <div class="card-label">Direction C — Dense / Dark Pro</div>
+        <div class="mockup dir-c">
+          <div class="app-title">Tasks</div>
+          <div class="input-row">
+            <input type="text" placeholder="New task…" />
+            <button class="btn-add">+ Add</button>
+          </div>
+          <div class="todo-item">
+            <div class="checkbox checked"></div>
+            <span class="todo-text done">Buy groceries</span>
+            <button class="btn-delete">✕</button>
+          </div>
+          <div class="todo-item">
+            <div class="checkbox"></div>
+            <span class="todo-text">Write architecture doc</span>
+            <button class="btn-delete">✕</button>
+          </div>
+          <div class="todo-item">
+            <div class="checkbox"></div>
+            <span class="todo-text">Review pull request</span>
+            <button class="btn-delete">✕</button>
+          </div>
+          <div class="todo-item">
+            <div class="checkbox"></div>
+            <span class="todo-text">Call the dentist</span>
+            <button class="btn-delete">✕</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Direction D -->
+      <div class="card">
+        <div class="card-label">Direction D — Warm / Friendly</div>
+        <div class="mockup dir-d">
+          <div class="app-title">Todos</div>
+          <div class="app-subtitle">4 tasks · 1 completed</div>
+          <div class="input-row">
+            <input type="text" placeholder="Add a task…" />
+            <button class="btn-add">+</button>
+          </div>
+          <div class="todo-item">
+            <div class="checkbox checked"></div>
+            <span class="todo-text done">Buy groceries</span>
+            <button class="btn-delete">✕</button>
+          </div>
+          <div class="todo-item">
+            <div class="checkbox"></div>
+            <span class="todo-text">Write architecture doc</span>
+            <button class="btn-delete">✕</button>
+          </div>
+          <div class="todo-item">
+            <div class="checkbox"></div>
+            <span class="todo-text">Review pull request</span>
+            <button class="btn-delete">✕</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Direction E -->
+      <div class="card">
+        <div class="card-label">Direction E — High Contrast / Accessible</div>
+        <div class="mockup dir-e">
+          <div class="app-title">TODO LIST</div>
+          <div class="input-row">
+            <input type="text" placeholder="Add a new task…" />
+            <button class="btn-add">ADD</button>
+          </div>
+          <div class="todo-item">
+            <input type="checkbox" checked />
+            <span class="todo-text done">Buy groceries</span>
+            <button class="btn-delete">Delete</button>
+          </div>
+          <div class="todo-item">
+            <input type="checkbox" />
+            <span class="todo-text">Write architecture doc</span>
+            <button class="btn-delete">Delete</button>
+          </div>
+          <div class="todo-item">
+            <input type="checkbox" />
+            <span class="todo-text">Review pull request</span>
+            <button class="btn-delete">Delete</button>
+          </div>
+          <div class="todo-item">
+            <input type="checkbox" />
+            <span class="todo-text">Call the dentist</span>
+            <button class="btn-delete">Delete</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Direction F -->
+      <div class="card">
+        <div class="card-label">Direction F — Spacious / Editorial</div>
+        <div class="mockup dir-f">
+          <div class="app-title">todos</div>
+          <input type="text" placeholder="What needs doing?" />
+          <div class="todo-item">
+            <div class="checkbox checked"></div>
+            <span class="todo-text done">Buy groceries</span>
+            <button class="btn-delete">remove</button>
+          </div>
+          <div class="todo-item">
+            <div class="checkbox"></div>
+            <span class="todo-text">Write architecture doc</span>
+            <button class="btn-delete">remove</button>
+          </div>
+          <div class="todo-item">
+            <div class="checkbox"></div>
+            <span class="todo-text">Review pull request</span>
+            <button class="btn-delete">remove</button>
+          </div>
+          <div class="todo-item">
+            <div class="checkbox"></div>
+            <span class="todo-text">Call the dentist</span>
+            <button class="btn-delete">remove</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <div class="legend-item">
+        <strong>Direction A</strong
+        ><span
+          >Minimal Light — recommended baseline. Aligns with emotional goals
+          (calm, focused). Hover-reveal delete. Indigo accent.</span
+        >
+      </div>
+      <div class="legend-item">
+        <strong>Direction B</strong
+        ><span
+          >Card-Based — slightly elevated surface. Rounder, softer feel. Good
+          alternative if a more "app-like" frame is preferred.</span
+        >
+      </div>
+      <div class="legend-item">
+        <strong>Direction C</strong
+        ><span
+          >Dark Pro — developer terminal aesthetic. High personality but may
+          conflict with "calm" goal. Best if dark mode is a priority.</span
+        >
+      </div>
+      <div class="legend-item">
+        <strong>Direction D</strong
+        ><span
+          >Warm / Friendly — orange accent, pill input, circular checkboxes.
+          Friendly and approachable. Less conservative.</span
+        >
+      </div>
+      <div class="legend-item">
+        <strong>Direction E</strong
+        ><span
+          >High Contrast — maximum accessibility. Explicit "Delete" labels,
+          always-visible actions. Functional over aesthetic.</span
+        >
+      </div>
+      <div class="legend-item">
+        <strong>Direction F</strong
+        ><span
+          >Spacious Editorial — underline input, generous whitespace, lowercase
+          branding. Refined and distinctive but unconventional.</span
+        >
+      </div>
+    </div>
+  </body>
+</html>

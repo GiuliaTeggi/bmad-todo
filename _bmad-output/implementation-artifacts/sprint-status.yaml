@@ -1,0 +1,62 @@
+# generated: 2026-03-10
+# project: bmad-todo
+# project_key: NOKEY
+# tracking_system: file-system
+# story_location: _bmad-output/implementation-artifacts
+
+# STATUS DEFINITIONS:
+# ==================
+# Epic Status:
+#   - backlog: Epic not yet started
+#   - in-progress: Epic actively being worked on
+#   - done: All stories in epic completed
+#
+# Epic Status Transitions:
+#   - backlog → in-progress: Automatically when first story is created (via create-story)
+#   - in-progress → done: Manually when all stories reach 'done' status
+#
+# Story Status:
+#   - backlog: Story only exists in epic file
+#   - ready-for-dev: Story file created in stories folder
+#   - in-progress: Developer actively working on implementation
+#   - review: Ready for code review (via Dev's code-review workflow)
+#   - done: Story completed
+#
+# Retrospective Status:
+#   - optional: Can be completed but not required
+#   - done: Retrospective has been completed
+#
+# WORKFLOW NOTES:
+# ===============
+# - Epic transitions to 'in-progress' automatically when first story is created
+# - Stories can be worked in parallel if team capacity allows
+# - SM typically creates next story after previous one is 'done' to incorporate learnings
+# - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
+
+generated: 2026-03-10
+project: bmad-todo
+project_key: NOKEY
+tracking_system: file-system
+story_location: _bmad-output/implementation-artifacts
+
+development_status:
+  epic-1: done
+  1-1-initialize-monorepo-workspace: done
+  1-2-todo-database-schema-and-migrations: done
+  1-3-todo-rest-api-endpoints: done
+  1-4-backend-unit-and-integration-test-suite: done
+  epic-1-retrospective: done
+
+  epic-2: done
+  2-1-project-foundation-react-app-with-tanstack-query-and-api-layer: done
+  2-2-todo-list-display-with-loading-and-empty-states: done
+  2-3-create-todo-with-optimistic-update: done
+  2-4-toggle-todo-completion-with-optimistic-update: done
+  2-5-delete-todo-with-optimistic-update: done
+  2-6-responsive-layout-accessibility-audit-and-css-foundations: done
+  epic-2-retrospective: done
+
+  epic-3: done
+  3-1-docker-compose-infrastructure: done
+  3-2-playwright-end-to-end-test-suite: done
+  epic-3-retrospective: done
