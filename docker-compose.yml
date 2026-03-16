@@ -25,7 +25,7 @@ services:
       context: .
       dockerfile: apps/backend/Dockerfile
     environment:
-      DATABASE_URL: ${DATABASE_URL:-postgres://postgres:postgres@db:5432/bmad_todo}
+      DATABASE_URL: postgres://postgres:postgres@db:5432/bmad_todo
       FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:8080}
       NODE_ENV: ${NODE_ENV:-production}
     ports:
